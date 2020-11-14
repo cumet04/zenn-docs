@@ -1,0 +1,9 @@
+{
+  "name": "zenn-docs",
+  "description": "https://zenn.dev/cumet04",
+  "author": "cumet04",
+  "license": "MIT",
+  "dependencies": {
+    "zenn-cli": "^0.1.57"
+  }
+}
