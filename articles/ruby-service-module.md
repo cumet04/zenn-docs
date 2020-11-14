@@ -3,7 +3,7 @@ title: "Rubyでスッキリとサービスクラス（モジュール）を作�
 emoji: "👻"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [ruby, rails]
-published: false
+published: true
 ---
 
 Rubyで`Foo.execute(args)`のように使えるクラスを作りたい。インタンス化は必要無い。内部で使うためのメソッドにはアクセスされたくない。
@@ -11,7 +11,7 @@ Rubyで`Foo.execute(args)`のように使えるクラスを作りたい。イン
 
 いいやり方ないかなと思っていましたが、ありました。
 
-## 先に結論
+## まず結論
 定義側で
 ```ruby:foo_module.rb
 module Foo
@@ -74,7 +74,7 @@ end
 ```
 `private_class_method`します。当然外から`Foo.bar`は呼べません。
 
-極めて正攻法で文法的に正しいのですが、private側のメソッド名を必ず2回書く必要があり面倒です。
+極めて正攻法で文法的に正しいのですが、private側のメソッド名を必ず2回書く必要があり面倒です。あとvimでメソッド名で`*`したときに反応して邪魔です。
 また筆者の好みですが「publicなものとprivateなものを`private`という境界線によって視覚的に分離したい」という要求があり、その点が微妙です。
 
 ### class \<\< self
@@ -96,7 +96,7 @@ privateでの区切りが意味をなしており、また`self.`を都度書か
 ファイルのほぼ全域のインデントが一段増えてしまうのがつらいです。惜しい。
 
 一応、インデントを減らしたいだけであれば
-```
+```ruby
 module Foo; class << self
   ...
 end;end
