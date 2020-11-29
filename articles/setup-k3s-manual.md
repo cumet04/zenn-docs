@@ -298,4 +298,4 @@ systemctl enable --now k3s
 まだk8s manifestを入れる手段を用意していなかったりnode-tokenが（SecureStringではない）ただのStringだったりしますが、
 このままCloudFormationなどに記述していけばちゃんとクラスタにできそうです。
 
-（2019/9/30 追記) AWS CDKで記述しました https://qiita.com/cumet04/items/2dbc099919d81de88e4a
+（2019/9/30 追記) AWS CDKで記述しました https://zenn.dev/cumet04/articles/setup-k3s-cdk
