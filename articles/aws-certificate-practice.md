@@ -2,8 +2,8 @@
 title: "AWS認定の模擬試験を受けてみる流れ"
 emoji: "🐷"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: [AWS, 認定試験]
-published: true
+topics: [aws, 認定試験]
+published: false
 ---
 
 :::message

@@ -2,8 +2,8 @@
 title: "AWSでk3sクラスタを構築する（CDK編）"
 emoji: "😎"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: [AWS, kubernetes, CDK, k3s]
-published: true
+topics: [aws, kubernetes, cdk, k3s]
+published: false
 ---
 
 :::message

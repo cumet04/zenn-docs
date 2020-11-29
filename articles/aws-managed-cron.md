@@ -2,8 +2,8 @@
 title: "AWSマネージドでEC2サーバ群の1台にcronする"
 emoji: "🦔"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: [AWS, SSM, lambda, runcommand, cron]
-published: true
+topics: [aws, ssm, lambda, runcommand, cron]
+published: false
 ---
 
 :::message

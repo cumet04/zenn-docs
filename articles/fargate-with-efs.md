@@ -2,8 +2,8 @@
 title: "FargateからのEFSマウントを試す"
 emoji: "🐡"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: [AWS, EFS, Fargate]
-published: true
+topics: [aws, efs, fargate]
+published: false
 ---
 
 :::message

@@ -3,7 +3,7 @@ title: "RailsのViewを（ほぼ）全部Vue.jsで書く仕組みを試みてみ
 emoji: "📝"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [rails, vue]
-published: true
+published: false
 ---
 
 :::message

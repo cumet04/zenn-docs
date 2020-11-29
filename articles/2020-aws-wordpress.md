@@ -3,7 +3,7 @@ title: "2020年のAWSでいい感じWordpressインフラを組んでみる"
 emoji: "📘"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [AWS, CDK, WordPress]
-published: true
+published: false
 ---
 
 :::message

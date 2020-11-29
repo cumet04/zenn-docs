@@ -3,7 +3,7 @@ title: "Snowpack+React+Typescriptを公式手順でinitする"
 emoji: "🦁"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [typescript, react, snowpack, 環境構築]
-published: true
+published: false
 ---
 
 :::message

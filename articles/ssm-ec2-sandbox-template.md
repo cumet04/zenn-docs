@@ -2,8 +2,8 @@
 title: "SSMと起動テンプレートを使って最速でお砂場EC2を用意する"
 emoji: "👏"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: [AWS, EC2, SessionManager]
-published: true
+topics: [aws, ec2, SessionManager]
+published: false
 ---
 
 :::message

@@ -2,8 +2,8 @@
 title: "ぼくのかんがえたrails new"
 emoji: "🔥"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: [Rails, Rails6, 環境構築]
-published: true
+topics: [rails, 環境構築]
+published: false
 ---
 
 :::message
