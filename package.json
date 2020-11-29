@@ -4,6 +4,6 @@
   "author": "cumet04",
   "license": "MIT",
   "dependencies": {
-    "zenn-cli": "^0.1.57"
+    "zenn-cli": "^0.1.59"
   }
 }
