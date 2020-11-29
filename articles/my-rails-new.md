@@ -3,7 +3,7 @@ title: "ぼくのかんがえたrails new"
 emoji: "🔥"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [rails, 環境構築]
-published: false
+published: true
 ---
 
 :::message

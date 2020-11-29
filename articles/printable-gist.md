@@ -3,7 +3,7 @@ title: "印刷readyなgistを作る小技"
 emoji: "✨"
 type: "idea" # tech: 技術記事 / idea: アイデア
 topics: [gist, 小ネタ, 印刷]
-published: false
+published: true
 ---
 
 :::message

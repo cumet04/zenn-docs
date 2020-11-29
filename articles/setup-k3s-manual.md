@@ -3,7 +3,7 @@ title: "AWSでk3sクラスタを構築する（手動編）"
 emoji: "🦁"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [aws, kubernetes, k3s]
-published: false
+published: true
 ---
 
 :::message

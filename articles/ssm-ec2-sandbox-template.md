@@ -3,7 +3,7 @@ title: "SSMと起動テンプレートを使って最速でお砂場EC2を用意
 emoji: "👏"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [aws, ec2, SessionManager]
-published: false
+published: true
 ---
 
 :::message

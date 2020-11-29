@@ -3,7 +3,7 @@ title: "windowsをusb外付けストレージでちゃんと動かす"
 emoji: "⛳"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [windows, 環境構築, OS]
-published: false
+published: true
 ---
 
 :::message

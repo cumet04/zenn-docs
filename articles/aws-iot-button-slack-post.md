@@ -3,7 +3,7 @@ title: "AWS IoTボタンを買ってslackにポストしてみた"
 emoji: "👌"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [aws, iot, awsiot]
-published: false
+published: true
 ---
 
 :::message
