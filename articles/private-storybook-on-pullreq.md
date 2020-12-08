@@ -1,5 +1,5 @@
 ---
-title: "pullreq毎にプライベートなstorybook（や静的webサイト）プレビューを作る"
+title: "pullreq毎にprivateなstorybook(や静的webサイト)プレビューを作る"
 emoji: "😺"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [storybook, s3, githubactions]
