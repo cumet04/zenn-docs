@@ -23,16 +23,29 @@ published: false
 
 いや！望みを託されてONにしたろ！
 
-```json:tsconfig.json
-{
-  "compilerOptions": {
-    ...
-    "strict": true, // TODO: ちょくちょくONにして直してくれるとうれしい
+```
+$ yarn dev
+...
+ERROR in /home/user/repos/github.com/awesome_org/big-project/frontend/src/xxx/aaa.tsx
+./src/xxx/aaa.tsx
+[tsl] ERROR in /home/user/repos/github.com/awesome_org/big-project/frontend/src/xxx/aaa.tsx(14,43)
+      TS2531: Object is possibly 'null'.
+
+ERROR in /home/user/repos/github.com/awesome_org/big-project/frontend/src/xxx/bbb.tsx
+./src/xxx/bbb.tsx
+[tsl] ERROR in /home/user/repos/github.com/awesome_org/big-project/frontend/src/xxx/bbb.tsx(92,73)
+      TS2322: Type 'string | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+
+ERROR in /home/user/repos/github.com/awesome_org/big-project/frontend/src/xxx/ccc.tsx
+./src/xxx/ccc.tsx
+[tsl] ERROR in /home/user/repos/github.com/awesome_org/big-project/frontend/src/xxx/ccc.tsx(103,68)
+      TS2345: Argument of type 'Date | null' is not assignable to parameter of type 'Date'.
+  Type 'null' is not assignable to type 'Date'.
+...
 ```
 
-TODO: webpackのエラー数表示
-
-まぁそうですよねー。知ってた。
+まぁそうですよねー。知ってたー。
 
 ## いま書いたコードだけでも...
 しかしビルドができないとなると、ちょくちょくONにすることすらできません。とはいえこのままだとプロジェクトのstrictへの道は永遠に閉ざされたままです。
