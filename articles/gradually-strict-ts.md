@@ -3,7 +3,7 @@ title: "既存TypeScriptプロジェクトを少しずつstrictにする"
 emoji: "🕌"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [typescript]
-published: false
+published: true
 ---
 
 > `Uncaught TypeError: Cannot read property 'name' of undefined`
