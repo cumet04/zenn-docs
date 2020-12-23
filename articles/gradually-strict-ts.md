@@ -3,8 +3,12 @@ title: "既存TypeScriptプロジェクトを少しずつstrictにする"
 emoji: "🕌"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [typescript]
-published: false
+published: true
 ---
+
+:::message
+この記事は『[LITALICO Engineers Advent Calendar 2020](https://qiita.com/advent-calendar/2020/litalico)』18日目の記事です。遅れておりました。
+:::
 
 > `Uncaught TypeError: Cannot read property 'name' of undefined`
 
