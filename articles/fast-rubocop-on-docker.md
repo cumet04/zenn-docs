@@ -3,7 +3,7 @@ title: "Ruby on Docker環境で高速にrubocopする"
 emoji: "📚"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [ruby, docker, rubocop, vscode, rails]
-published: false
+published: true
 ---
 
 数年前にgo/gofmtに触れて以降、CodeFormat on Saveされないとソワソワする体質になってしまい、仕事のRails開発においても`"ruby.format": "rubocop"`してFormat on Saveしています。  
