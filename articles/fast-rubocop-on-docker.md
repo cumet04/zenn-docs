@@ -29,7 +29,7 @@ https://zenn.dev/cumet04/scraps/fae984bf1de5e5
 ## rubocop-daemon
 https://github.com/fohte/rubocop-daemon
 
-rubocopをrequireしたdaemonを起動しておき、実際のCLIはdaemonへのコマンド送信と結果受信のみ行う（処理はdaemonが実行）というツールです。都度の実行時に起動オーバーヘッドが発生せず早い、という仕組みです。
+rubocopをrequireしたdaemonを起動しておき、実際のCLIはdaemonへのコマンド送信と結果受信のみ行う（処理はdaemonが実行する）というツールです。都度の実行時に起動オーバーヘッドが発生せず早い、という仕組みです。
 
 これや！求めていたのはこれや！こいつをdocker-composeで動かせばええんや！
 
@@ -63,8 +63,7 @@ RUN bundle install
 COPY . /app
 ```
 
-この環境に、ひとまずrubocop-daemonを追加します。
-
+この環境にrubocop-daemonを追加します。
 Gemfileに以下を追加し、
 ```ruby:Gemfile
 gem 'rubocop-daemon', require: false
@@ -84,7 +83,7 @@ docker-compose.ymlに
 この状態でrubocop-daemonのコンテナ内で`rubocop-daemon exec`すれば、つまり`docker-compose exec rubocop_daemon bundle exec rubocop-daemon exec`すればrubocopした場合の結果が出力されます。
 
 簡単にですが、「ひとまず動く」状態を作ることができました。
-ただしこれでは`docker-compose exec`と`bundle exec rubocop-daemon`それぞれの起動オーバーヘッドが発生し、下手すると普通にrubocopを動かすより遅くなってしまいます。
+ただしこれでは`docker-compose exec`と`bundle exec rubocop-daemon`それぞれの起動オーバーヘッドが発生し、下手するとrubocopをそのまま動かすより遅くなってしまいます。
 
 ここはやはり[より速く](https://github.com/fohte/rubocop-daemon#more-speed)、rubocop-daemonのリポジトリにある`rubocop-daemon-wrapper`をローカル実行できるようにしたいところです。
 
@@ -151,7 +150,7 @@ https://github.com/cumet04/rubocop-daemon/tree/binding_option
 +      - "3001:3001"
 ```
 
-※volumesの`/root/.cache/rubocop-daemon/app`の最後の`/app`がコンテナ内でdaemonが動くディレクトリに合わせます
+※volumesの`/root/.cache/rubocop-daemon/app`の最後の`/app`はコンテナ内でdaemonが動くディレクトリに合わせます
 
 これでdockerホスト側の3001ポート経由でrubocop-daemonとTCP通信ができ、状態ファイルも`./backend/tmp/rubocop-daemon`から参照できます。
 
@@ -185,8 +184,8 @@ exit $(cat $DAEMON_DIR/status)
 
 `nc`コマンドはコードを直接書き換える式を採りました。Linuxな方は`nc -N`にしてgit excludeしておきます。環境変数で上書きできるようにしたかったのですが、vscodeから実行した際にうまく読み込んでくれなかったため諦めました。
 
-以降の処理はオリジナルを参考にシンプルにしたものです。
-`-s`オプションは指定されていると決め打ちです。またエラー処理も`set -e`に任せています。プロジェクト内で使うものならこのくらいでよいでしょう。
+それ以降の処理はオリジナルを参考にシンプルにしたものです。
+`-s`オプションは指定されていると決め打ちです。またエラー処理も`set -e`に任せています。プロジェクト内で使うものならこのくらいでもよいでしょう。
 
 この時点で、以下のように上記ファイルを`-s`オプション専用のrubocopコマンドとして利用可能です。`nc`コマンドを使った簡易なスクリプトのため動作も速いです。
 ```
@@ -236,7 +235,7 @@ $ ln -s $PWD/backend/bin/rubocop /usr/local/bin
 ```
 ※作成先パスは環境による。適切に優先度の高いところへ
 
-グローバルの`rubocop`を完全にこのスクリプトに置き換えます。vscodeの起動の都度PATHなどを気にする必要がなくなる反面、対象プロジェクト以外でrubocopが使えなくなります^[この点オリジナルのrubocop-daemon-wrapperは考えられていて、通常のrubocopとしても動作するようになっているようです]。
+グローバルの`rubocop`を完全にこのスクリプトに置き換えます。vscodeの起動の都度PATHなどを気にする必要がなくなる反面、対象プロジェクト以外でrubocopが使えなくなります^[この点オリジナルのrubocop-daemon-wrapperはよく考えられていて、rubocop-daemonが無い場合は通常のrubocopとしても動作するようになっているようです]。
 
 仕事PCで単独プロジェクトしか触らないとか、他のプロジェクトはbundler経由だから問題無いなど、特定条件下では有用だと思います。
 
