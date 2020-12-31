@@ -132,7 +132,7 @@ https://github.com/cumet04/rubocop-daemon/tree/binding_option
 ```
 
 :::message
-この変更は記事執筆後に本家にpull-requestを出す予定のため、もしそれがmergeされればこのセクションの内容はまるっと不要になります。なるといいなぁ。
+この変更は[本家にpull-reqeustを出しており](https://github.com/fohte/rubocop-daemon/pull/26)、もしこれがmergeされればこのセクションの内容はまるっと不要になります。なるといいなぁ。
 :::
 
 ### docker-compose.ymlを修正する
