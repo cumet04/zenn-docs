@@ -1,4 +1,9 @@
 # Zenn Contents
+https://zenn.dev/cumet04
 
-* [📘 How to use](https://zenn.dev/zenn/articles/zenn-cli-guide)
-* [📘 Markdown guide](https://zenn.dev/zenn/articles/markdown-guide)
+### snippets
+
+#### to git timestamp
+```
+ls -1 articles/*.md | while read LINE; touch -d (git log -1 --format=%cI $LINE) $LINE; end
+```
