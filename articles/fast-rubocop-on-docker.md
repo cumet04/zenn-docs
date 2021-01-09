@@ -17,7 +17,7 @@ published: true
 rubocop-daemon本体のforkおよび機能追加、composeの設定、環境特化のwrapperスクリプト（`rubocop`として動くもの）を作り、vscodeからformatterとして実行できる環境を記した。
 
 成果物と試行錯誤ログはこちら
-https://github.com/cumet04/sbox_rubocop-daemon-on-docker
+https://github.com/cumet04/sbox_rubocop-daemon-on-docker/tree/rubocop-daemon-gem
 https://zenn.dev/cumet04/scraps/fae984bf1de5e5
 
 なお本記事は調査・試行錯誤ログの割合が多いため、手っ取り早く導入だけしたい方は上記リポジトリより`README.md`, `docker-compose.yml`, `backend/bin/rubocop`だけ読めばokです。
