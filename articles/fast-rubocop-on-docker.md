@@ -213,6 +213,32 @@ config/application.rb:10:3: C: Style/Documentation: Missing top-level class docu
 
 ## vscodeの設定＆起動
 ここまでくれば、このvscodeがスクリプトをrubocopとして使うようにできれば完成です。
+
+vscodeのruby拡張でformatterやlinterを設定できますが、通常のruby拡張 (`rebornix.ruby`) ではformatterのパスを指定することはできず^[linterは指定可能なのですが...]、本記事で用意した`rubocop`コマンドを使うことができません。
+そこで`ruby-rubocop` (`misogi.ruby-rubocop`) という別の拡張を使うことで解決します。
+
+上記拡張をインストールし、vscodeのsettings.jsonにて下記を設定します:
+```json
+"ruby.format": false,
+"ruby.lint": {},
+"[ruby]": {
+  "editor.defaultFormatter": "misogi.ruby-rubocop"
+},
+"ruby.rubocop.executePath": "./backend/bin/",
+```
+
+やっていることは、通常のruby拡張によるformat/lintの無効化・formatterに使う拡張の指定・rubocopパスの指定です。
+
+rubocopのパスは**実行ファイルのあるディレクトリ**を指定します。どうもこの拡張は `{executePathの値}rubocop`を実行するようで、rubocop自体のパスではなくディレクトリを指定し、末尾のスラッシュもつける必要があります。
+
+これで独自に用意したrubocopコマンドにてformat/lintが実行されます^[linterは明示的に指定していませんがこれで動きます]。
+
+:::details 記事初期公開時の内容（非推奨）
+
+**以下の内容はアプローチが非常にハックなため推奨しません。上記rubocop拡張機能の利用を推奨します。**
+
+---
+
 しかしながら[rubocop-daemonのREADMEにもある](https://github.com/fohte/rubocop-daemon/tree/v0.3.2#use-with-vs-code)ように、vscodeは実行する`rubocop`のパスをカスタマイズすることはできません^[[元のissue](https://github.com/rubyide/vscode-ruby/issues/413)も[その次のissue](https://github.com/rubyide/vscode-ruby/issues/548)も長らく動いておらず、実装の気配はなさそうです。こ、コントリビュートチャンスか...？]。
 
 そのため何かしらのハックをするわけですが、筆者が試したのは以下2点です。
@@ -239,8 +265,10 @@ $ ln -s $PWD/backend/bin/rubocop /usr/local/bin
 
 仕事PCで単独プロジェクトしか触らないとか、他のプロジェクトはbundler経由だから問題無いなど、特定条件下では有用だと思います。
 
+:::
+
 
 ## まとめ
-想定よりかなりハックな感じではありますが、一旦入れてしまえば大変高速なlintやformatがお楽しみいただけると思います。
+一部ハックな感じではありますが、一旦入れてしまえば大変高速なlintやformatがお楽しみいただけると思います。
 
 format on saveジャンキーな方は試してみてはいかがでしょうか。
