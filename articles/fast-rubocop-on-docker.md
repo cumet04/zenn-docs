@@ -11,6 +11,10 @@ published: true
 
 そこでrubocop実行を高速に、またDocker環境で満足に動くように試みました。
 
+:::message
+2021/1/9 vscodeでの利用についてスマートな方法に更新しました
+:::
+
 ## TL;DR
 既存プロジェクトのdocker-composeに[rubocop-daemon](https://github.com/fohte/rubocop-daemon)を追加し、そこにローカルからコマンドを送信してrubocopとして動かせる環境を作った。
 
