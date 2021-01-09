@@ -11,13 +11,17 @@ published: true
 
 そこでrubocop実行を高速に、またDocker環境で満足に動くように試みました。
 
+:::message
+2021/1/9 vscodeでの利用についてスマートな方法に更新しました
+:::
+
 ## TL;DR
 既存プロジェクトのdocker-composeに[rubocop-daemon](https://github.com/fohte/rubocop-daemon)を追加し、そこにローカルからコマンドを送信してrubocopとして動かせる環境を作った。
 
 rubocop-daemon本体のforkおよび機能追加、composeの設定、環境特化のwrapperスクリプト（`rubocop`として動くもの）を作り、vscodeからformatterとして実行できる環境を記した。
 
 成果物と試行錯誤ログはこちら
-https://github.com/cumet04/sbox_rubocop-daemon-on-docker
+https://github.com/cumet04/sbox_rubocop-daemon-on-docker/tree/rubocop-daemon-gem
 https://zenn.dev/cumet04/scraps/fae984bf1de5e5
 
 なお本記事は調査・試行錯誤ログの割合が多いため、手っ取り早く導入だけしたい方は上記リポジトリより`README.md`, `docker-compose.yml`, `backend/bin/rubocop`だけ読めばokです。
@@ -213,6 +217,32 @@ config/application.rb:10:3: C: Style/Documentation: Missing top-level class docu
 
 ## vscodeの設定＆起動
 ここまでくれば、このvscodeがスクリプトをrubocopとして使うようにできれば完成です。
+
+vscodeのruby拡張でformatterやlinterを設定できますが、通常のruby拡張 (`rebornix.ruby`) ではformatterのパスを指定することはできず^[linterは指定可能なのですが...]、本記事で用意した`rubocop`コマンドを使うことができません。
+そこで`ruby-rubocop` (`misogi.ruby-rubocop`) という別の拡張を使うことで解決します。
+
+上記拡張をインストールし、vscodeのsettings.jsonにて下記を設定します:
+```json
+"ruby.format": false,
+"ruby.lint": {},
+"[ruby]": {
+  "editor.defaultFormatter": "misogi.ruby-rubocop"
+},
+"ruby.rubocop.executePath": "./backend/bin/",
+```
+
+やっていることは、通常のruby拡張によるformat/lintの無効化・formatterに使う拡張の指定・rubocopパスの指定です。
+
+rubocopのパスは**実行ファイルのあるディレクトリ**を指定します。どうもこの拡張は `{executePathの値}rubocop`を実行するようで、rubocop自体のパスではなくディレクトリを指定し、末尾のスラッシュもつける必要があります。
+
+これで独自に用意したrubocopコマンドにてformat/lintが実行されます^[linterは明示的に指定していませんがこれで動きます]。
+
+:::details 記事初期公開時の内容（非推奨）
+
+**以下の内容はアプローチが非常にハックなため推奨しません。上記rubocop拡張機能の利用を推奨します。**
+
+---
+
 しかしながら[rubocop-daemonのREADMEにもある](https://github.com/fohte/rubocop-daemon/tree/v0.3.2#use-with-vs-code)ように、vscodeは実行する`rubocop`のパスをカスタマイズすることはできません^[[元のissue](https://github.com/rubyide/vscode-ruby/issues/413)も[その次のissue](https://github.com/rubyide/vscode-ruby/issues/548)も長らく動いておらず、実装の気配はなさそうです。こ、コントリビュートチャンスか...？]。
 
 そのため何かしらのハックをするわけですが、筆者が試したのは以下2点です。
@@ -239,8 +269,10 @@ $ ln -s $PWD/backend/bin/rubocop /usr/local/bin
 
 仕事PCで単独プロジェクトしか触らないとか、他のプロジェクトはbundler経由だから問題無いなど、特定条件下では有用だと思います。
 
+:::
+
 
 ## まとめ
-想定よりかなりハックな感じではありますが、一旦入れてしまえば大変高速なlintやformatがお楽しみいただけると思います。
+一部ハックな感じではありますが、一旦入れてしまえば大変高速なlintやformatがお楽しみいただけると思います。
 
 format on saveジャンキーな方は試してみてはいかがでしょうか。
