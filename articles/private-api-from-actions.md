@@ -3,7 +3,7 @@ title: "GitHub ActionsからprivateなWeb APIを叩く"
 emoji: "✨"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [githubactions, aws, lambda]
-published: false
+published: true
 ---
 
 なんやかんやで別のサービスに移行されず、EC2で立ててIP制限して秘伝のタレ的に運用されてるサーバ、ありますよね。Jenkinsに始まりRedmineにredash、Zabbixとか。
