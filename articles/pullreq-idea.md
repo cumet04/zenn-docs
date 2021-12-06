@@ -3,7 +3,7 @@ title: "チームでのPull Requestで心掛けていること"
 emoji: "🔖"
 type: "idea" # tech: 技術記事 / idea: アイデア
 topics: [github]
-published: false
+published: true
 ---
 
 この記事は [LITALICO Engineers Advent Calendar 2021](https://qiita.com/advent-calendar/2021/litalico) 7日目の記事です。
