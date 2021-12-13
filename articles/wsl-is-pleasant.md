@@ -3,8 +3,10 @@ title: "WSLはいいぞ"
 emoji: "🐧"
 type: "idea" # tech: 技術記事 / idea: アイデア
 topics: [wsl,windows]
-published: false
+published: true
 ---
+
+この記事は [LITALICO Engineers Advent Calendar 2021](https://qiita.com/advent-calendar/2021/litalico) その2 の14日目の記事です。
 
 社内slackでMacの民が環境などでハマっているのを見ると、「（WSLはいいぞ...）」と心の中で思ったり冗談半分で言ったりするのですが、なんだかんだで良さをちゃんと列挙したことないなと気付きました。
 
