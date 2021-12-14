@@ -49,6 +49,7 @@ function buildArticle({ title, content }) {
   return `
 <html>
 <head>
+  <meta name="robots" content="noindex">
   <link rel="stylesheet" href="../zenn-content-css.css" />
   <style>
     body {
