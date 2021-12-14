@@ -1,7 +1,7 @@
 {
-  "editor.formatOnSave": true,
   "explorer.sortOrder": "modified",
   "[javascript]": {
+    "editor.formatOnSave": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
 }

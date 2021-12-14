@@ -3,6 +3,9 @@
   "description": "https://zenn.dev/cumet04",
   "author": "cumet04",
   "license": "MIT",
+  "scripts": {
+    "build:preview": "node preview.js"
+  },
   "dependencies": {
     "zenn-content-css": "^0.1.99"
   },
