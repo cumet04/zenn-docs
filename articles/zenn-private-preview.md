@@ -2,9 +2,11 @@
 title: "zennでも限定公開がしたい！"
 emoji: "📝"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: [zenn]
-published: false
+topics: [zenn netlify 記事]
+published: true
 ---
+
+この記事は [LITALICO Engineers Advent Calendar 2021](https://qiita.com/advent-calendar/2021/litalico) その2 の15日目の記事です。
 
 たまーにですが、ありますよね。限定公開したいとき。
 
