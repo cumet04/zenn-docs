@@ -2,7 +2,7 @@
 title: "zennでも限定公開がしたい！"
 emoji: "📝"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: [zenn netlify 記事]
+topics: [zenn,netlify,記事]
 published: true
 ---
 
