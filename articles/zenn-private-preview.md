@@ -132,7 +132,7 @@ fs.copyFileSync(
 buildArticle(filepath);
 ```
 
-色々と凝る気は全く無いので、Reactやモジュールバンドラなどは使わず、ただのjavascriptのスクリプトです。htmlも文字列。cssもnode_modulesからそのままコピーしてます。
+今回は思いついたまま動くものをサクッと作り上げる気持ちなので、、Reactやモジュールバンドラなどは使わず、ただのjavascriptのスクリプトです。htmlも文字列。cssもnode_modulesからそのままコピーしてます。
 
 ちなみにガワのstyleはzennのサイトを見ながら少々頂いてきました。
 
