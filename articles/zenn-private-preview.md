@@ -134,7 +134,7 @@ fs.copyFileSync(
 buildArticle(filepath);
 ```
 
-今回は思いついたまま動くものをサクッと作り上げる気持ちなので、、Reactやモジュールバンドラなどは使わず、ただのjavascriptのスクリプトです。htmlも文字列。cssもnode_modulesからそのままコピーしてます。
+今回は思いついたまま動くものをサクッと作り上げる気持ちなので、Reactやモジュールバンドラなどは使わず、ただのjavascriptのスクリプトです。htmlも文字列。cssもnode_modulesからそのままコピーしてます。
 
 ちなみにガワのstyleはzennのサイトを見ながら少々頂いてきました。
 
@@ -144,9 +144,7 @@ buildArticle(filepath);
 
 ここから、未公開分だけ選んでビルドする & 念の為noindexタグを付与したものが下記になります。URLとしては推測されにくいものになる想定ですが、念の為にnoindexも設定しておきます。
 
-https://github.com/cumet04/zenn-docs/blob/daf7d88a43ff5c63a9fccf15a4ee20b4ad047346/preview.js
-
-<!-- TODO: ハッシュをmerge後に差し替える。この時点だとnoindexついてない -->
+https://github.com/cumet04/zenn-docs/blob/7a4c87c8cfa61b94e90d11cf8a536dc2ada5f139/preview.js
 
 この後のステップはこのコードが前提です。
 
