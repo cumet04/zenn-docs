@@ -7,13 +7,13 @@
     "build:preview": "node preview.js"
   },
   "dependencies": {
-    "zenn-content-css": "^0.1.99"
+    "zenn-content-css": "^0.1.106"
   },
   "devDependencies": {
-    "@types/node": "^16.11.12",
+    "@types/node": "^16.0.0",
     "gray-matter": "^4.0.3",
     "prettier": "^2.5.1",
-    "zenn-cli": "^0.1.99",
-    "zenn-markdown-html": "^0.1.99"
+    "zenn-cli": "^0.1.106",
+    "zenn-markdown-html": "^0.1.106"
   }
 }
