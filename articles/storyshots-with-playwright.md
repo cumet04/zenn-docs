@@ -3,7 +3,7 @@ title: "PlaywrightでStorybookのブラウザ毎キャプチャを撮ってみ�
 emoji: "📸"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [storybook, playwright]
-published: false
+published: true
 ---
 
 先日、サービスの本番環境にて、検証から漏れていたブラウザでの見た目が崩れていることに気付きました。
