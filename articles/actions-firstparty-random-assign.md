@@ -3,7 +3,7 @@ title: "GitHub Actionsでのランダムアサインをサードパーティ無�
 emoji: "🙋‍♂️"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [githubactions]
-published: false
+published: true
 ---
 
 チームでdependabotを運用し始め、検証やリリースの責任者としてassigneeをランダムに設定したくなりました。自動化したいのでGitHub Actionsでの実現方法を調べたところ、どうも各々が自前のactionを作り公開したり、他の人のそれらを利用したりしているようでした。
