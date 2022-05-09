@@ -11,11 +11,10 @@ published: false
 そんな複雑なことをするわけでもないのにそんなサードパーティのものを使うのもなぁ...ということで、よりシンプルにyaml定義一本で実現するものを作ってみました。
 
 ## アイデアと成果物
-assigneeの割当などgithubの操作をactionsで実現する場合、[GitHub-hosted runnersのubuntuイメージに入っているghコマンド](https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu2004-Readme.md#cli-tools)を使うもしくは[actions/github-script](https://github.com/actions/github-script)を使う方法があります。アサイン自体はこれらで簡易に実現できるので、あとは「ランダムに一人選ぶ」ができればほぼ完成です。
-
+assignee割当などgithubの操作をactionsで実現する場合、[GitHub-hosted runnersのubuntuイメージに入っているghコマンド](https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu2004-Readme.md#cli-tools)を使う、もしくは[actions/github-script](https://github.com/actions/github-script)を使う方法があります。アサイン自体はこれらで簡易に実現できるので、あとは「ランダムに一人選ぶ」ができればほぼ完成です。
 ※actions/github-scriptは公式提供でありサードパーティではないという認識です
 
-最初にactions/github-scriptを使ったJavaScript実装を作ったのですが、shellでもよりシンプルに実現できると気付いたので、それら両方のパターンを作っています。
+最初にactions/github-scriptを使ったJavaScript実装を作ったのですが、shellでも（ghコマンドを使うパターンでも）よりシンプルに実現できると気付いたので、それら両方のパターンを作っています。
 
 また筆者のユースケースでは[PullRequestのレビュアー割当にCODEOWNERSを使っている](TODO)のですが、実現したいランダムアサインの候補者がCODEOWNERSと一致するため、候補者をここから読むパターンも作りました。
 
@@ -79,11 +78,17 @@ const names = owners                               // '* @foo @bar @baz\napp/ @f
 
 ※地道な文字列加工でわかりにくいため、各行の加工後のサンプルをコメントで補足しています
 
-これはCODEOWNERSの記載が全ファイル宛(`*`エントリ)に一行だけ書いているという前提です。筆者の環境ではPullRequestのレビュアーアサインのためだけに使っているため、このような特殊な前提になっています。そのため、CODEOWNERSを真面目に指定している（パスごとに別々のメンバーを指定するなど）場合は工夫が必要かと思います。
+これはCODEOWNERSの記載が全ファイル宛(`*`エントリ)に一行だけ書いているという前提です。以下のようなイメージです。
+
+```
+* @member1 @member2 @member3 ...
+```
+
+筆者の環境ではPullRequestのレビュアーアサインのためだけに使っているため、このような特殊な前提になっています。そのため、CODEOWNERSを真面目に指定している（パスごとに別々のメンバーを指定するなどしている）場合は工夫が必要かと思います。
 
 CODEOWNERSのユーザ指定はアサインのスクリプトと違って`@`がついたメンション指定式のため、それを取り除く処理が入っています。
 
-なおリポジトリ内のファイルを参照するため `- uses: actions/checkout@v3` のstepが必要です。
+なお、リポジトリ内のファイルを参照するため `- uses: actions/checkout@v3` のstepが必要です。（それらを含めた全コードは、前述のGitHubのリポジトリのリンク先を参照）
 
 ### ランダムに選ぶ
 対象者の配列が得られているので、ここから一つランダムチョイスします。
