@@ -3,7 +3,7 @@ title: "RuboCopのServer Modeで高速lint/formatする with Docker"
 emoji: "📚"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [ruby, docker, rubocop, vscode, rails]
-published: false
+published: true
 ---
 
 以前、[rubocop-daemon](https://github.com/fohte/rubocop-daemon)をDocker環境で動かしてvscodeで高速にformat on saveする記事を書きました。
