@@ -11,6 +11,17 @@ published: true
 
 そこでrubocop実行を高速に、またDocker環境で満足に動くように試みました。
 
+## 2022/9/10 追記
+RuboCop 1.31 にて正式にServer Mode機能が実装されたため、そちらを使ったよりシンプルな方法を新しく記事にしています。
+
+https://zenn.dev/cumet04/articles/rubocop-server-with-docker
+
+:::message alert
+これ以下の内容は過去の記録として一応残していますが、内容が古くこの方法に特にメリットは無いと考えているため、筆者としてはより公式な方法である上記記事の方法を推奨します
+:::
+
+---
+
 :::message
 2021/1/9 vscodeでの利用についてスマートな方法に更新しました
 :::

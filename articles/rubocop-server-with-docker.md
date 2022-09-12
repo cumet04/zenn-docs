@@ -3,7 +3,7 @@ title: "RuboCopのServer Modeで高速lint/formatする with Docker"
 emoji: "📚"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [ruby, docker, rubocop, vscode, rails]
-published: false
+published: true
 ---
 
 以前、[rubocop-daemon](https://github.com/fohte/rubocop-daemon)をDocker環境で動かしてvscodeで高速にformat on saveする記事を書きました。
@@ -21,16 +21,18 @@ https://docs.rubocop.org/rubocop/usage/server.html
 以下、最終成果とは直接関連が薄い動作検証セクションとなります。手っ取り早く組み込む方法だけ知りたい方は[vscodeに組み込む](#vscodeに組み込む)セクションをご覧ください
 :::
 
-最低限rubocopが動くRuby on Dockerな開発環境を作り、そこで動作確認をしたあとにvscodeに組み込んでいく想定です。
-なお完成品のリポジトリがこちら。sinatraのサンプルコードにrubocopを入れただけとなっています。
+最低限rubocopが動くRuby on Dockerな開発環境を作り、そこで動作確認をしたあとにvscodeに組み込んでいく流れを想定しています。なお完成品のリポジトリがこちらです。sinatraのサンプルコードにrubocopを入れただけのコンテナをdocker composeで起動する構成です。
 
 https://github.com/cumet04/sbox_rubocop-server-on-docker
 
 ### 通常のユースケースを試す
-まずはコンテナの中に入り、コンテナ/ホストを意識しない通常のユースケースで動かしてみます。
+まずはコンテナ/ホストを意識しない通常のユースケースで動かしてみます。通常の開発をしている想定でdocker composeでコンテナを起動し、そのコンテナの中に入って各種コマンドを試してみます。
 
-ドキュメントによると`--server`オプションをつけてrubocopを実行すると、サーバプロセスが起動していなければ起動し、既にサーバがあればそれを使って実行するというような挙動になるようです。
-ということで、serverなし・serverあり（一回目）・serverあり（二回目）の3パターンをtimeコマンドで時間を見ながら実行します。
+ドキュメントによると、`--server`オプションをつけてrubocopを実行した場合、サーバプロセスがなければ起動して実行、既にサーバがあればそれを使って実行するというような挙動になるようです。
+ということで、serverなし・serverあり（一回目）・serverあり（二回目）の3パターンをtimeコマンドで時間を見ながら実行します。[^1]
+
+[^1]: シンタックスハイライトが想定と違うように見えていますが、ハイライトなしよりは見やすいと思うのでこのままにしています
+
 
 ```shell:アプリケーションコンテナの中にbashで入った
 root@b6d6d4555a18:/app# time rubocop .
@@ -72,11 +74,11 @@ realだけ取り出してサマリすると以下となります。
 
 :::message
 原理的にServer Modeによって起動オーバーヘッドを減らせば高速になるはずだということはわかっており、本記事ではこの速度差については特に掘り下げません。
-そのため、現実に近い大規模なプロジェクトを用意したり複数回実行して平均を取るようなベンチマークは実施せず、上記の簡易的な確認に留めています。
+そのため、現実に近い大規模なプロジェクトを用意したり複数回実行して平均を取るようなベンチマークは実施せず、上記の簡易的な動作確認に留めています。
 :::
 
 ### コンテナ外からの実行を考える
-以前書いた記事ではrubocopのdaemonをコンテナとして常時起動し、それに対してホストマシンからシンクライアント的にコマンドを実行するという仕組みにしていました。そのため、Server Modeでも似た仕組みを想定して試してみます。
+以前書いた記事では、あらかじめrubocopのdaemonをコンテナとして常時起動しておき、それに対してホストマシンからシンクライアント的にコマンドを実行するという仕組みにしていました。そのため、Server Modeでも似た仕組みを想定しつつ挙動を見ていきます。
 
 ドキュメントによると`--start-server`や`--stop-server`オプションでサーバの起動や停止だけを実行できるようなので、試してみます。
 
@@ -92,7 +94,7 @@ RuboCop server starting on 127.0.0.1:42167.
 
 デフォルトではポート番号は特に固定されておらず、起動ごとに変更されるようです。ここは`$RUBOCOP_SERVER_HOST`や`$RUBOCOP_SERVER_PORT`環境変数で指定できるとドキュメントに記載されています。
 
-また`--start-server`はサーバプロセスを起動してすぐ終了する仕様で、ドキュメントを見てもサーバをforegroundで起動するようなオプションは見当たりませんでした。
+また`--start-server`はサーバプロセスを起動してすぐ終了する仕様で、ドキュメントを見てもサーバをforegroundで起動するようなオプションは見当たりませんでした。サーバを単独で起動させるコンテナを立てるには少々工夫が要りそうです。
 
 ともあれ、適当なポートをホストにbindしたコンテナでサーバを実行し、ホスト側からそこに繋いでrubocopしてみます。
 `docker-compose.yml`に以下のようなサービスを追加し、
@@ -112,7 +114,7 @@ RuboCop server starting on 127.0.0.1:42167.
 Address already in use - bind(2) for "localhost" port 45678 (Errno::EADDRINUSE)
 ```
 
-新しくサーバを起動しようとしてしまいました。どうも別ホストに明示的に起動したサーバに接続しにいくようなユースケースは想定されていないようです。
+新しくサーバを起動しようとしてエラーになってしまいました。どうも別ホストに明示的に起動したサーバに接続しにいくようなユースケースは想定されていないようです。
 
 :::details コードからこの挙動を追ってみた記録
 念のため、rubocop本体のコードを確認して上記仕様を確かめてみます。
@@ -126,7 +128,7 @@ https://github.com/rubocop/rubocop/blob/d5d2fe1b37624b43b055507e3e1329f747e7812d
 これ以上は掘り下げていませんが、見るからにキャッシュ（ファイルシステムと思われる）やpidを参照しており、あくまでサーバもクライアントも同一ホストで動作させる想定になっているようです。
 :::
 
-仕方ないのでこの方針は諦めます。そこで通常のユースケースに則り、アプリケーションコンテナに対して`docker compose exec`で`rubocop --server`を実行してみます。
+仕方ないのでこの方針は諦めます。そこで通常のユースケースに則り、rubocop用のコンテナを立てるようなことはせず、アプリケーションコンテナに対して`docker compose exec`で`rubocop --server`を実行してみます。
 
 ```shell:ホストマシン上
 sbox_rubocop-server-on-docker$ time docker compose exec app rubocop --server
@@ -151,15 +153,14 @@ sys     0m0.026s
 ```
 
 2回目が早くなっており、単にこれを実行させれば良さそうということがわかります。
-こちらのほうがシンプルに実現できそうであり、そもそも他の方法は無いことから、この方向で進めます。
+こちらのほうがシンプルに実現できそうであり、かつそもそも他の方法は無いことから、この方向で進めます。
 
 ## vscodeに組み込む
-Server Modeの挙動や仕様とDocker環境での実現方針は決まったので、vscode上で動かせるように設定していきます。
-なおvscodeを想定していますが、用意するラッパースクリプトは汎用なので、vscode以外でも使えるはずです。
+Server Modeの挙動や仕様とDocker環境での実現方針は決まったので、vscode上で動かせるように設定していきます。なお、vscode想定とはいえ用意するラッパースクリプトは汎用なので、vscode以外でも使えるはずです。
 
-まず環境準備ですが、cop対象のコードがあるコンテナがdocker-composeで動作しており、そのプロジェクト内にあるrubocopが`1.31`以上のバージョンになっていればokです。特に追加のライブラリやコンテナ設定などは不要です。
+前提となる環境条件ですが、cop対象のコードがあるコンテナがdocker-composeで動作しており、そのプロジェクト内にあるrubocopが`1.31`以上のバージョンになっていればokです。特に追加のライブラリやコンテナ設定などは不要です。
 
-次にホスト環境で`rubocop`コマンドとして振る舞うラッパースクリプトを用意します。ここでは`bin/rubocop`として下記のようなスクリプトを作成します。
+まずホスト環境で`rubocop`コマンドとして振る舞うラッパースクリプトを用意します。ここでは`bin/rubocop`として下記のようなスクリプトを作成します。
 
 ```bash:bin/rubocop
 #!/bin/bash
@@ -172,8 +173,7 @@ docker compose exec $OPTION app rubocop --server $@ # --serverオプションを
 
 これで`bin/rubocop`が実質コンテナ内でのrubocopコマンドとして動作します。ただしファイルパスはコンテナ内のWORKDIR基準なので注意が必要です。
 
-最後にvscode用に拡張と設定を用意します。
-rubocopを動作させる拡張として[`misogi.ruby-rubocop`](https://marketplace.visualstudio.com/items?itemName=misogi.ruby-rubocop)を導入し、また下記設定を追加します。
+次にvscode用に拡張機能と設定を用意します。rubocopを動作させる拡張として[`misogi.ruby-rubocop`](https://marketplace.visualstudio.com/items?itemName=misogi.ruby-rubocop)を導入し、また下記設定を追加します。
 
 ```json:settings.json
   "ruby.rubocop.executePath": "./bin/",
@@ -192,6 +192,10 @@ rubocopを動作させる拡張として[`misogi.ruby-rubocop`](https://marketpl
   - `misogi.ruby-rubocop`は相対パスで渡すので問題ない
 * formatterのカスタムパスを指定できず、カスタムの`bin/rubocop`を指定できない
 :::
+
+導入のために追加したファイルは上記2つのみで、特にプロジェクトの既存の設定やコードに手を入れておらず、コンテナを足したりもしていません。つまり、rubocopのバージョンさえ上がっていれば**既存のプロジェクトにも大きな変更を入れずに導入することができます**。
+
+そのrubocopのバージョンを上げるのがどのくらい現実的かというのはプロジェクトによってまちまちかもしれませんが、追加のライブラリを足すのと違い、rubocop本体は遅かれ早かれ上げるものだと思います。せっかくなので、このタイミングで上げてみるのも良いでしょう。
 
 ## まとめ
 RuboCopが公式にServer Modeを実装したことにより、高速なlintやformatがかなり簡単に導入できるようになりました。
