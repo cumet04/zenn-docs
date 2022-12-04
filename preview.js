@@ -23,6 +23,11 @@ function main() {
     "./node_modules/zenn-content-css/lib/index.css",
     path.resolve(outDir, "zenn-content-css.css")
   );
+
+  // TODO: プレビューしない記事のものも含めて全コピーしているのを何とかする？
+  const imageDir = path.resolve(outDir, "images");
+  fs.mkdirSync(imageDir, { recursive: true });
+  fs.cpSync("./images", imageDir, { recursive: true });
 }
 
 function listArticles() {
@@ -50,6 +55,7 @@ function buildArticle({ title, content }) {
 <html>
 <head>
   <meta name="robots" content="noindex">
+  <script src="https://embed.zenn.studio/js/listen-embed-event.js" ></script>
   <link rel="stylesheet" href="../zenn-content-css.css" />
   <style>
     body {
