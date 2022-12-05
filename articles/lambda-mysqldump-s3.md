@@ -3,8 +3,10 @@ title: "Lambdaでシンプルにmysqldump to S3を試みる"
 emoji: "👌"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [lambda,mysql,rds]
-published: false
+published: true
 ---
+
+この記事は [LITALICO Engineers Advent Calendar 2022](https://qiita.com/advent-calendar/2022/litalico) その1 の6日目の記事です。
 
 RDSから日次でmysqldumpしてS3に投げたいことありますよね。なんやかんやでローカルのダミーデータ生成がうまく機能しておらず、マスクした本番データをローカルで使ってる場合とか。
 
