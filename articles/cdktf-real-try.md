@@ -3,7 +3,7 @@ title: "CDK for Terraformを実務でちょっと入れてみての気付き"
 emoji: "🔨"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [cdktf,terraform,awscdk,cdk]
-published: true
+published: false
 published_at: 2022-12-21 00:00
 ---
 
@@ -52,60 +52,8 @@ export interface DataAwsSubnetConfig extends cdktf.TerraformMetaArguments {
 昨今の技術選定において（社内外問わず）既存資産の量は重要なので、この点はとても良いです。
 
 
-## 表現力の違いによるコード設計の違いがある
-基本的にはプログラミング言語の方が表現力は高いのですが、高いことが純粋なメリットにはならない場合や、逆に制約が存在する場合もあります。
-
-中でも、事前にはあまり想像していなかったながらも実は考慮が必要だったポイントを紹介します。
-
-### 複数環境でのディレクトリ構成
-複数環境（本番やステージングなど）を作る際、環境ごとにディレクトリを切りmain.tfなどを複製するような構成が多いように思います。この理由の一つに「環境差違が多い場合にその吸収コードで逆に煩雑・冗長になる」があると考えていますが、通常のプログラミング言語では単にifなりswitchなりその他言語機能を使って冗長でなく差異を表現できます。
-
-以下、同一関数内で環境差異だけ分岐する方向で書いたリソース定義の例です。
-
-```typescript
-// env変数は 'production' | 'staging' | 'development'
-const webappSecurityGroupName = {
-  production: 'hoge-prod-web-server',
-  staging: 'hoge-staging-web-server',
-  development: 'hoge-dev-web-server(alb)',
-}[env];
-const sgWebApp = new SecurityGroup(this, `SecurityGroup_hogeWebApp_${env}`, {
-  vpcId: vpcId,
-  name: webappSecurityGroupName,
-  description: webappSecurityGroupName,
-  tags: {
-    // MEMO: stagingだけセキュリティグループ名とタグのNameが微妙に揃ってなかった
-    Name: env === 'staging' ? 'hoge-stg-web-server' : webappSecurityGroupName,
-  },
-  ingress: [
-    {
-      fromPort: 80,
-      protocol: 'tcp',
-      securityGroups: [
-        {
-          production: 'sg-aaaaaaaaaaaaaaaaa', // hoge-prod-elb
-          staging: 'sg-bbbbbbbbbbbbbbbbb', // hoge-stg-elb
-          development: 'sg-ccccccccccccccccc', // hoge-dev-app-alb
-        }[env],
-      ],
-      toPort: 80,
-    },
-  ],
-  egress: [egressAll],
-});
-```
-
-ただ命名がバラバラなだけで不要な複雑さを生んでいる例に見えますが、手動作成されたリソースをそのまま取り込んだほぼ実例のコードになっています（とはいえ既存コード中でトップクラスにごちゃごちゃしている例ではあります）。もちろんこのような差異をHCLで表現することは可能だとは思いますが、ブロック定義が増えたり
-
-となると、CDKTFではある程度の環境差違があっても一つの共通コードから複数環境を作る設計でいいのかなと思えます。
-※tfstate分離の観点では、同一の基本コードで複数環境/tfstateする例は[公式の例](https://developer.hashicorp.com/terraform/cdktf/concepts/stacks#multiple-stacks)にあります（Stackが1 tfstateです）
-
-しかしこの構成（環境ごとにディレクトリを切る）に限らず、プラクティス的に存在する各種設計が上記のようなHCLの仕様に起因したものなのか、それともterraform自体の仕様や運用面の懸念から来るのかを都度検討せねば、設計要素の知見を取り入れづらいです。
-
-歴戦のテラフォーマーであればその辺りの判断はできるかもしれませんが、筆者はterraformを含むIaCの経験があまりない（AWSコンソールを手作業で構築した経験がほとんど）ため、いまいち判断が難しく悩みながら書いています。
-
-### 定義順・参照順の依存
-他の設計関連のトピックで、プログラミング言語での記述ではリソースの定義順と参照順に依存が発生するという点があります。簡単な例を挙げます。
+## リソースの定義順と参照順に依存関係がある
+コード設計関連のトピックで、プログラミング言語での記述ではリソースの定義順と参照順に依存が発生するという点があります。これだけ書くと何を言っているのかという感じですが、ひとまず簡単な例を挙げます。
 
 ```
 // ECSタスクに付与するタスク実行ロール
@@ -174,28 +122,28 @@ const taskdef = new EcsTaskDefinition(this, 'service', {
 となります。この場合は単に`githubRole`の定義を後に持ってくれば動きますが、たとえば上のIAMリソース2つとECSリソースを別のファイルや関数に分離している（IAMだけを一纏めのファイルで定義しているなど）場合はそうは出来ません。
 ※TypeScriptでの参照を諦めてarnを文字列で書いても解決は可能です
 
-HCLであれば、少なくとも同一モジュール内であればリソースの定義順と参照順に特に制約はありませんが、CDKTFの場合は評価順が後ろにあるものを先に参照することは（普通の方法では）できません。そんなに入り組んだ依存はそう頻繁にはないと思いますが、とはいえこういう制約があるという点を念頭に置いてコード分割やファイル構成などの設計を行う必要がありそうです。
+普通にプログラミングをする思考からすると至極当然ではあるのですが、HCLでは逆に（少なくとも同一モジュール内では）この制約はなく、自由にリソース定義・相互参照できそれを前提にコード全体を設計できます。HCLにおける諸々の設計はこの条件下でなされるため、これを前提にした設計をそのままCDKTFに持ち込むと問題があるかもしれません。
 
-筆者はまだ深い調査はできていませんが、もしかすると同じ制約と長く向き合っているであろうCDK（for Terraformではない本家）の界隈に何か知見があるのかもしれません。
+そんなに入り組んだ依存はそう頻繁にはないかもしれませんが、とはいえこういう制約があるという点を念頭に置いてコード分割やファイル構成などの設計を行う必要がありそうです。
+
+筆者はまだ深い調査はできていませんが、もしかすると同じ条件と長く向き合っているであろうCDK（for Terraformではない本家のAWS CDK）の界隈に何か参考になる知見があるかもしれません。
 
 
 ## terraformコマンドは普通に使える
-ここまではコードの話でしたが、ここからはコマンド実行の話です。
+ここまではコードの話でしたが、その外のコマンド実行についても触れます。
 
 CDKTFの設計としては、いわゆるプログラミング言語で書く部分ではコードによるインフラ定義およびterraformで使えるtf.jsonの生成 (synth) までを行い、それ以降のplanやapply、tfstate管理はterraformに任せるようになっています。
 
 [CDKTFのCLIの実装](https://github.com/hashicorp/terraform-cdk/tree/main/packages/cdktf-cli)をざっと読んでみた^[React実装なため一般的なCLIと比べるといくらか挙動を追いづらいですが、とはいえコード自体は割と読みやすかったです]のですが、planにせよapplyにせよ、事前の設定チェックやUIの上書きが入る以外はほぼterraformコマンドのラッパーでした。またsynthについてもcdktf.jsonで指定する外部コマンド（TypeScript版の場合は `ts-node main.ts` など）をオプション環境変数付きで実行しているだけに見えました。
 
-つまり、（initやgetなど一部のコマンドを除けば）通常運用においてはcdktfコマンドなしでも作業が可能です。実際にcdktfコマンドを経由せずにterraformコマンドを直接使う作業も混ぜたりしていましたが、特に問題なく使えています。
+つまり（initやgetなど一部のコマンドを除けば）通常運用においてはcdktfコマンドなしでも作業が可能です。実際にcdktfコマンドを経由せずにterraformコマンドを直接使う作業も混ぜたりしていましたが、特に問題なく使えています。
 ※cdktfのplan/applyは毎度synth（ビルド）を実行するので、コードを変更せずに複数回/複数環境に実行する際はそのほうが早い
 
-またterraformコマンドのうちimportやstate系コマンドはcdktfコマンドには無く、結局terraformコマンドは意識することになります。
-
-筆者の環境ではTypeScriptで書いているのでcdktfコマンドを使うハードルは低いですが、他の言語で書く場合は普段はcdktfコマンドが不要な環境を整えた方がうれしい場合もあるかもしれません。
+筆者の環境ではTypeScriptで書いているのでcdktfコマンドを使うハードルは低いですが、他の言語で書く場合やCLIツールのオーバーヘッドが高いのが嫌な場合などはcdktfコマンドが不要な環境を整えても良いかもしれません。またCI環境や関連ツールの兼ね合いでterraformコマンドを直接使いたい場合も問題なく対応できます。
 
 
 ## 専用CLIのapply時の確認挙動が軽い
-これは非常に細かいというか、実用上はさほど問題にならないお気持ち的な話ですが、terrraformとcdktfでapplyコマンドを実行した際の確認が少し違います。まずはterraform applyをするとこうです。
+これは非常に細かいというか、実用上はさほど問題にならないお気持ち的な話ですが、terrraformとcdktfでapplyコマンドを実行した際の確認が少し違います。まずはterraform applyをすると最後に以下のような確認が表示されます。
 
 ![](/images/cdktf-real-try/terraform-apply.png)
 
