@@ -3,9 +3,11 @@ title: "CDK for Terraformを実務でちょっと入れてみての気付き"
 emoji: "🔨"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [cdktf,terraform,awscdk,cdk]
-published: false
-#published_at: 2022-12-21 00:00
+published: true
+published_at: 2022-12-21 00:00
 ---
+
+この記事は [LITALICO Engineers Advent Calendar 2022](https://qiita.com/advent-calendar/2022/litalico) その1 の21日目の記事です。
 
 以前よりちょっと気になっていたTerraformをCDKで（普通のプログラミング言語で）記述できるCDK for Terraform （以後CDKTF）ですが、10月頃から実務で導入し始めているので、気になったところや感想を紹介します。
 
