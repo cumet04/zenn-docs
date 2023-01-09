@@ -24,7 +24,7 @@ published: true
 インターネットからの接続がIP制限されているEC2サーバに対し、VPC内に設置したLambdaからWebAPIをキックするようにし、そのLambdaをGitHub Actionsからawscliを使って起動する、というデモをします。
 
 ## 前提状況を作る
-始める前に、前提とない「IP制限されたWebサーバ」を作ります。
+始める前に、前提となる「IP制限されたWebサーバ」を作ります。
 動作確認としてはIP制限されておりwebアクセス可能なサーバがあれば良いです。
 
 筆者は[こういう一時的な実験に使う用のEC2起動テンプレート](https://zenn.dev/cumet04/articles/ssm-ec2-sandbox-template)があるのでそれを使いました。
