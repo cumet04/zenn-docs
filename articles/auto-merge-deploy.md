@@ -33,7 +33,7 @@ https://zenn.dev/dzeyelid/articles/5ab31d2cc162b1
 3. CIが通り次第mergeされる（auto-mergeの機能）
 4. auto-mergeされたPull Requestのcloseにフックしてデプロイジョブを発火（actionsで実装）
 
-とでき、メンバーが手動で操作する部分は1. だけになります^[実際にはリリース後確認はあると思いますが、そこはデプロイ後の工程として本記事の対象外とします]。このように、auto-merge機能といくつかのGitHub Actionsの実装で一連のフローを自動化できると考えました。
+とでき、メンバーが手動で操作する部分は1. だけになります。このように、auto-merge機能といくつかのGitHub Actionsの実装で一連のフローを自動化できると考えました。
 
 ということで、実際にサンプルリポジトリに実装していきます。
  
@@ -44,7 +44,7 @@ https://zenn.dev/dzeyelid/articles/5ab31d2cc162b1
 * かつそれがBranch protection ruleになっている
 * 更にup to date before merging制約が有効
 
-としておきます。というわけでまず用意したCIがこちら^[GitHub Actionsにはジョブにtimeout-minutesをつけねばならぬという掟がありますが、記事中ではノイズになるので記載していません]。
+としておきます。というわけでまず用意したCIがこちら。
 
 ```yml:.github/workflows/long_test.yml
 name: some long test
@@ -65,6 +65,10 @@ jobs:
       # if './hoge' exists, this test passes
       - run: ls hoge
 ```
+
+:::message
+実際に動かすGitHub Actionsのジョブにはtimeout-minutesをつけねばならぬという掟がありますが、記事中ではノイズになるので意図的に省略しています。
+:::
 
 あとでCIが失敗する場合のテストがしたいので、ファイルの有無で成否を調整できるテストも用意しています。そしてリポジトリのBranch protection ruleを以下のように設定しています。
 
@@ -184,7 +188,7 @@ on:
   workflow_run:
     types: [completed]
     workflows: 
-      # 失敗の監視対象とするワークフロー（ジョブではない）の名前
+      # 失敗の監視対象とするワークフロー（ジョブではない）の名前。下記は最初に用意したワークフローの名前
       - some long test
 
 jobs:
