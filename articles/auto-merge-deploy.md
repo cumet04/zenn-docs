@@ -1,5 +1,5 @@
 ---
-title: "「CI通ったらmergeしてリリースします」を自動化してみる"
+title: "auto-mergeで「CI通ったらmergeしてリリースします」を自動化する"
 emoji: "🔥"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [githubactions]
