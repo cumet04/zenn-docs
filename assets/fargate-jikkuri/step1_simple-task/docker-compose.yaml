@@ -1,0 +1,4 @@
+services:
+  app:
+    image: ruby:3.2-slim
+    command: ruby -e "puts 'じっくり！Fargate'"

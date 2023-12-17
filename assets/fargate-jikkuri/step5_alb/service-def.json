@@ -1,0 +1,21 @@
+{
+  "taskDefinition": "fargate-jikkuri:21",
+  "desiredCount": 1,
+  "loadBalancers": [
+    {
+      "containerName": "app",
+      "containerPort": 3000,
+      "targetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:xxxxxxxxxxxx:targetgroup/fargate-skeleton-jikkuri-main/745c0b38f0caab9a"
+    }
+  ],
+  "networkConfiguration": {
+    "awsvpcConfiguration": {
+      "assignPublicIp": "ENABLED",
+      "securityGroups": ["sg-03039ee76fdf43249"],
+      "subnets": [
+        "subnet-015290279b708b989",
+        "subnet-0e0ffebc344d9c9cd"
+      ]
+    }
+  }
+}
