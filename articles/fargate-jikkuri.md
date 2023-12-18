@@ -3,7 +3,7 @@ title: "あらためて、じっくり動かすFargate"
 emoji: "😸"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["AWS", "ECS", "Fargate"]
-published: false
+published: true
 ---
 
 自分でECS/Fargateやその周辺リソースのインフラ構築・整備をしたり、まわりのインフラ強くないチームメンバーがデバッグに苦戦する様子を見ながら、やっぱりECSは登場するリソースがちと多かったり役割分担がとっつきにくかったりするよなぁと思っていました。
