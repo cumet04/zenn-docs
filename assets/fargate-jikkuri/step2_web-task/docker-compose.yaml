@@ -1,0 +1,5 @@
+services:
+  app:
+    image: ruby:3.2-slim
+    command: bash -c 'gem install webrick && ruby -run -e httpd /home -p 3000'
+    ports: [3000:3000]

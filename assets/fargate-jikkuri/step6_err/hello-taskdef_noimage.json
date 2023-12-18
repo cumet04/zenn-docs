@@ -1,0 +1,27 @@
+{
+  "family": "fargate-jikkuri",
+  "cpu": "256",
+  "memory": "512",
+  "executionRoleArn": "arn:aws:iam::277803361278:role/fargate-skeleton_jikkuri_task_execution_role",
+  "networkMode": "awsvpc",
+  "containerDefinitions": [
+    {
+      "name": "app",
+      "image": "ruby:3.3-rc-srim",
+      "command": [
+        "bash",
+        "-c",
+        "gem install webrick && ruby -run -e httpd /home -p 3000"
+      ],
+      "portMappings": [{ "containerPort": 3000 }],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/fargate-skeleton_jikkuri-main",
+          "awslogs-region": "ap-northeast-1",
+          "awslogs-stream-prefix": "logs"
+        }
+      }
+    }
+  ]
+}

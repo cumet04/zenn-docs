@@ -1,0 +1,14 @@
+{
+  "taskDefinition": "fargate-jikkuri:20",
+  "desiredCount": 1,
+  "networkConfiguration": {
+    "awsvpcConfiguration": {
+      "assignPublicIp": "ENABLED",
+      "securityGroups": ["sg-03039ee76fdf43249"],
+      "subnets": [
+        "subnet-015290279b708b989",
+        "subnet-0e0ffebc344d9c9cd"
+      ]
+    }
+  }
+}
