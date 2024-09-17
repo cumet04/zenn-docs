@@ -3,6 +3,7 @@ title: "WSLはいいぞ"
 emoji: "🐧"
 type: "idea" # tech: 技術記事 / idea: アイデア
 topics: [wsl,windows]
+publication_name: "litalico"
 published: true
 ---
 

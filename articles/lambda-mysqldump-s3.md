@@ -3,6 +3,7 @@ title: "Lambdaでシンプルにmysqldump to S3を試みる"
 emoji: "👌"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [lambda,mysql,rds]
+publication_name: "litalico"
 published: true
 ---
 

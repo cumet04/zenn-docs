@@ -3,6 +3,7 @@ title: "あらためて、じっくり動かすFargate"
 emoji: "😸"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["AWS", "ECS", "Fargate"]
+publication_name: "litalico"
 published: true
 ---
 

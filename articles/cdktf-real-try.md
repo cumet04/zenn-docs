@@ -3,6 +3,7 @@ title: "CDK for Terraformを実務でちょっと入れてみての気付き"
 emoji: "🔨"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [cdktf,terraform,awscdk,cdk]
+publication_name: "litalico"
 published: true
 published_at: 2022-12-21 00:00
 ---
