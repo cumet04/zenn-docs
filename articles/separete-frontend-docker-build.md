@@ -3,6 +3,7 @@ title: "Dockerビルドを分離してデプロイを高速化した話"
 emoji: "🐥"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [docker, frontend]
+publication_name: "litalico"
 published: true
 ---
 

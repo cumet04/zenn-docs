@@ -3,6 +3,7 @@ title: "既存TypeScriptプロジェクトを少しずつstrictにする"
 emoji: "🕌"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [typescript]
+publication_name: "litalico"
 published: true
 ---
 

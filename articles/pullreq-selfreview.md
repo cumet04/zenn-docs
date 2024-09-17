@@ -3,6 +3,7 @@ title: "Pull Requestのセルフレビューでやっていること"
 emoji: "🔖"
 type: "idea" # tech: 技術記事 / idea: アイデア
 topics: [github]
+publication_name: "litalico"
 published: true
 ---
 
